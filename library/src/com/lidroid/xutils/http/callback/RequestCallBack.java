@@ -87,5 +87,12 @@ public abstract class RequestCallBack<T> {
 
     public abstract void onSuccess(ResponseInfo<T> responseInfo);
 
+    /**
+     * someTimes can't get the total and currrent bytes, so you should keep the progress by yourself
+     * @param error
+     * @param msg
+     * @param total
+     * @param current
+     */
     public abstract void onFailure(HttpException error, String msg,long total,long current);
 }
