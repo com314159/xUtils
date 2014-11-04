@@ -1,5 +1,9 @@
 package com.lidroid.xutils.sample.fragment;
 
+import java.io.File;
+
+import org.apache.http.impl.cookie.BasicClientCookie;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.exception.DbException;
@@ -23,15 +28,12 @@ import com.lidroid.xutils.sample.DownloadListActivity;
 import com.lidroid.xutils.sample.R;
 import com.lidroid.xutils.sample.download.DownloadManager;
 import com.lidroid.xutils.sample.download.DownloadService;
-import com.lidroid.xutils.util.PreferencesCookieStore;
 import com.lidroid.xutils.util.LogUtils;
+import com.lidroid.xutils.util.PreferencesCookieStore;
 import com.lidroid.xutils.view.ResType;
 import com.lidroid.xutils.view.annotation.ResInject;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-import org.apache.http.impl.cookie.BasicClientCookie;
-
-import java.io.File;
 
 /**
  * Author: wyouflf
@@ -157,7 +159,7 @@ public class HttpFragment extends Fragment {
 
 
                     @Override
-                    public void onFailure(HttpException error, String msg) {
+                    public void onFailure(HttpException error, String msg,long total, long current) {
                         resultText.setText(msg);
                     }
                 });
@@ -194,7 +196,7 @@ public class HttpFragment extends Fragment {
 
 
                     @Override
-                    public void onFailure(HttpException error, String msg) {
+                    public void onFailure(HttpException error, String msg,long total, long current) {
                         resultText.setText(msg);
                     }
                 });
@@ -229,7 +231,7 @@ public class HttpFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(HttpException error, String msg) {
+                    public void onFailure(HttpException error, String msg,long total, long current) {
                         resultText.setText(msg);
                     }
                 });

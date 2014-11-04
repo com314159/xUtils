@@ -1,5 +1,11 @@
 package com.lidroid.xutils.sample.fragment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,7 +18,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
@@ -29,12 +40,6 @@ import com.lidroid.xutils.sample.ImageActivity;
 import com.lidroid.xutils.sample.R;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Author: wyouflf
@@ -120,7 +125,7 @@ public class BitmapFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(HttpException error, String msg) {
+                    public void onFailure(HttpException error, String msg,long total, long current) {
                     }
                 });
     }

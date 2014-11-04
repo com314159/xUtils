@@ -15,12 +15,11 @@
 
 package com.lidroid.xutils.http;
 
-import android.os.SystemClock;
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.callback.*;
-import com.lidroid.xutils.task.PriorityAsyncTask;
-import com.lidroid.xutils.util.OtherUtils;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.UnknownHostException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
@@ -31,10 +30,18 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.protocol.HttpContext;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.UnknownHostException;
+import android.os.SystemClock;
+
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.callback.DefaultHttpRedirectHandler;
+import com.lidroid.xutils.http.callback.FileDownloadHandler;
+import com.lidroid.xutils.http.callback.HttpRedirectHandler;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.callback.RequestCallBackHandler;
+import com.lidroid.xutils.http.callback.StringDownloadHandler;
+import com.lidroid.xutils.task.PriorityAsyncTask;
+import com.lidroid.xutils.util.OtherUtils;
 
 
 public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> implements RequestCallBackHandler {
@@ -55,6 +62,8 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
     private HttpRequestBase request;
     private boolean isUploading = true;
     private RequestCallBack<T> callback;
+    
+    private long mCurrentByte = -1,mTotalByte = -1;
 
     private int retriedCount = 0;
     private String fileSavePath = null;
@@ -210,7 +219,7 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
             case UPDATE_FAILURE:
                 if (values.length != 3) return;
                 this.state = State.FAILURE;
-                callback.onFailure((HttpException) values[1], (String) values[2]);
+                callback.onFailure((HttpException) values[1], (String) values[2],mTotalByte,mCurrentByte);
                 break;
             case UPDATE_SUCCESS:
                 if (values.length != 2) return;
@@ -258,7 +267,7 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
             if (request != null) {
                 return this.sendRequest(request);
             }
-        } else if (statusCode == 416) {
+        } else if (statusCode == HttpCode.MAYBE_SUCCESS) {
             throw new HttpException(statusCode, "maybe the file has downloaded completely");
         } else {
             throw new HttpException(statusCode, status.getReasonPhrase());
@@ -295,6 +304,10 @@ public class HttpHandler<T> extends PriorityAsyncTask<Object, Object, Void> impl
 
     @Override
     public boolean updateProgress(long total, long current, boolean forceUpdateUI) {
+    	
+    	mCurrentByte = current;
+    	mTotalByte = total;
+    	
         if (callback != null && this.state != State.CANCELLED) {
             if (forceUpdateUI) {
                 this.publishProgress(UPDATE_LOADING, total, current);

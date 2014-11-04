@@ -1,12 +1,20 @@
 package com.lidroid.xutils.sample;
 
+import java.io.File;
+import java.lang.ref.WeakReference;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.exception.HttpException;
@@ -19,9 +27,6 @@ import com.lidroid.xutils.sample.download.DownloadService;
 import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-
-import java.io.File;
-import java.lang.ref.WeakReference;
 
 /**
  * Author: wyouflf
@@ -253,7 +258,7 @@ public class DownloadListActivity extends Activity {
         }
 
         @Override
-        public void onFailure(HttpException error, String msg) {
+        public void onFailure(HttpException error, String msg,long total, long current) {
             refreshListItem();
         }
 

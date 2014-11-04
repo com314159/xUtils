@@ -1,7 +1,12 @@
 package com.lidroid.xutils.sample.download;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.database.Cursor;
+
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.db.converter.ColumnConverter;
@@ -14,10 +19,6 @@ import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.util.LogUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: wyouflf
@@ -247,7 +248,7 @@ public class DownloadManager {
         }
 
         @Override
-        public void onFailure(HttpException error, String msg) {
+        public void onFailure(HttpException error, String msg,long total, long current) {
             HttpHandler<File> handler = downloadInfo.getHandler();
             if (handler != null) {
                 downloadInfo.setState(handler.getState());
@@ -258,7 +259,7 @@ public class DownloadManager {
                 LogUtils.e(e.getMessage(), e);
             }
             if (baseCallBack != null) {
-                baseCallBack.onFailure(error, msg);
+                baseCallBack.onFailure(error, msg,total,current);
             }
         }
     }
