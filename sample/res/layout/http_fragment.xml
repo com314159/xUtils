@@ -10,7 +10,7 @@
     <EditText android:id="@+id/download_addr_edit"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:text="http://apps.lidroid.com/apiv2/dl/0000000/com.lidroid.fileexplorer"/>
+              android:text="http://jaxus-web.oss-cn-hangzhou.aliyuncs.com/apk/jaxus-1.0.0_Beta1.apk"/>
     <Button android:id="@+id/download_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

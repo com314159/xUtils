@@ -7,6 +7,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,9 +85,10 @@ public class HttpFragment extends Fragment {
 
     @OnClick(R.id.download_btn)
     public void download(View view) {
-        String target = "/sdcard/xUtils/" + System.currentTimeMillis() + "lzfile.apk";
+        String target = Environment.getExternalStorageDirectory().getPath() + "/XUtils/" + System.currentTimeMillis() + "lzfile.apk";
+        
         try {
-            downloadManager.addNewDownload(downloadAddrEdit.getText().toString(),
+            downloadManager.addNewDownload("http://jaxus-web.oss-cn-hangzhou.aliyuncs.com/apk/jaxus-1.0.0_Beta1.apk",
                     "力卓文件",
                     target,
                     true, // 如果目标文件存在，接着未完成的部分继续下载。服务器不支持RANGE时将从新下载。

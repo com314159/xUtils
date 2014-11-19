@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.HttpUtils;
@@ -18,6 +19,7 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 import com.lidroid.xutils.util.LogUtils;
 
 /**
@@ -72,6 +74,7 @@ public class DownloadManager {
         downloadInfo.setState(handler.getState());
         downloadInfoList.add(downloadInfo);
         db.saveBindingId(downloadInfo);
+        HttpUtils.sHttpCache.setEnabled(HttpMethod.GET, false);
     }
 
     public void resumeDownload(int index, final RequestCallBack<File> callback) throws DbException {
@@ -249,6 +252,7 @@ public class DownloadManager {
 
         @Override
         public void onFailure(HttpException error, String msg,long total, long current) {
+        	Log.i("test", " download error " + msg);
             HttpHandler<File> handler = downloadInfo.getHandler();
             if (handler != null) {
                 downloadInfo.setState(handler.getState());

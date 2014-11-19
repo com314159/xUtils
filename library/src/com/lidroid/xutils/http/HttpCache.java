@@ -15,11 +15,12 @@
 
 package com.lidroid.xutils.http;
 
-import android.text.TextUtils;
-import com.lidroid.xutils.http.client.HttpRequest;
-import com.lidroid.xutils.cache.LruMemoryCache;
-
 import java.util.concurrent.ConcurrentHashMap;
+
+import android.text.TextUtils;
+
+import com.lidroid.xutils.cache.LruMemoryCache;
+import com.lidroid.xutils.http.client.HttpRequest;
 
 /**
  * Author: wyouflf
@@ -113,6 +114,6 @@ public class HttpCache {
 
     static {
         httpMethod_enabled_map = new ConcurrentHashMap<String, Boolean>(10);
-        httpMethod_enabled_map.put(HttpRequest.HttpMethod.GET.toString(), true);
+        httpMethod_enabled_map.put(HttpRequest.HttpMethod.GET.toString(), false);
     }
 }
